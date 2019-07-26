@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+
+version = QMUI_LINT_VERSION
+
+android {
+    compileSdkVersion project.ext.compileSdkVersion
+    buildToolsVersion project.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion 14
+    }
+}
+
+dependencies {
+    lintPublish project(':lintrule')
+}
+
+File deployConfig = rootProject.file('gradle/deploy.properties')
+if (deployConfig.exists()) {
+    apply from: rootProject.file('gradle/deploy.gradle')
+}

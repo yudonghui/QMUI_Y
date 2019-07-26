@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+android {
+    compileSdkVersion parent.ext.compileSdkVersion
+    buildToolsVersion parent.ext.buildToolsVersion
+    defaultConfig {
+        applicationId "com.qmuiteam.qmuidemo"
+        minSdkVersion parent.ext.minSdkVersion
+        targetSdkVersion parent.ext.targetSdkVersion
+        versionCode 12
+        versionName "1.4.0"
+    }
+    // 避免 lint 检测出错时停止构建
+//    lintOptions {
+//      abortOnError false
+//    }
+}
+
+//apply plugin: 'com.qmuiteam.qmui'
+//qmui {
+//    parentTheme "AppRootTheme"
+//}
+
+configurations.all {
+    resolutionStrategy {
+        force "com.android.support:recyclerview-v7:$supportVersion"
+        force "com.android.support:appcompat-v7:$supportVersion"
+        force "com.android.support:design:$supportVersion"
+        force "com.android.support:support-vector-drawable:$supportVersion"
+    }
+}
+
+// 加@aar与不加@aar的区别：
+// http://stackoverflow.com/questions/30157575/why-should-i-include-a-gradle-dependency-as-aar
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation project(':lib')
+    api project(':lint')
+    implementation project(':qmui')
+    implementation project(':arch')
+    annotationProcessor project(':compiler')
+    annotationProcessor project(':arch-compiler')
+    //leak
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    //test
+    testImplementation 'junit:junit:4.12'
+    //    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    //    androidTestImplementation 'com.android.support.test:rules:1.0.2' // Set this dependency to use JUnit 4 rules
+    //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2' // Set this dependency to build and run Espresso tests
+}

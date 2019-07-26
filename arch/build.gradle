@@ -1,0 +1,39 @@
+apply plugin: 'com.android.library'
+
+version = QMUI_ARCH_VERSION
+
+android {
+
+    compileSdkVersion parent.ext.compileSdkVersion
+    lintOptions {
+        abortOnError false
+    }
+
+    defaultConfig {
+        minSdkVersion parent.ext.minSdkVersion
+        targetSdkVersion parent.ext.targetSdkVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly "com.android.support:design:$supportVersion"
+    api project(':arch-annotation')
+    compileOnly project(':qmui')
+    testImplementation 'junit:junit:4.12'
+    lintChecks project(':lintrule')
+}
+
+// deploy
+File deployConfig = rootProject.file('gradle/deploy.properties')
+if (deployConfig.exists()) {
+    apply from: rootProject.file('gradle/deploy.gradle')
+}
